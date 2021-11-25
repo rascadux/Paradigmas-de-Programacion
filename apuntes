@@ -1,0 +1,195 @@
+LISTAS: (no se pueden mezclar tipos en la lista)
+
+Crear lista numeros= 	 		[1;2;3;4;5]
+Crear lista chars= 			['a';'b';'c']
+Crear lista vacia= 			[]
+Tamaño de la lista=	 		List.lenght ...
+Cabeza de la lista=		 	List.hd ...
+Cola de la lista =			List.tl ...   (Quita el primer elemento y devuelve todos los demas)
+Concatenar listas= 			Lista1 @ Lista2 	ó	 List.append Lista1 Lista2
+
+Crear funcion length(ya esta predefinida, es para aprender):
+
+let rec length l =
+	if l = [] then 0
+	else 1 + lenght (List.tl l)
+;;
+
+let lmax = function
+	[] -> raise (Failure "lmax")
+     |  h::t -> List.fold_left max h t
+;;
+
+let rev l = 
+	List.fold_left (fun a b -> b::a) [] l
+;;
+
+let for_all p l =
+	List.fold_left (fun a b -> p b && a) true l
+;;
+
+let rec for_all p = function 
+	[]-> true
+      | h::t -> p h && for_all p t
+;;
+----------------------------------------------------------------------------
+
+let rec sorted = function
+	h1::h2::t -> h1 <= h2 && sorted (h2::t)
+     |  _ -> true
+;;
+
+let rec insert f x = function
+	[] -> [x]
+     |  h::t -> if f x h then x::h::t
+     		else h :: insert x t
+;;
+
+let rec i_sort f = function
+	[] -> []
+     |  h::t -> insert f h (i sort f t)
+;;
+
+let crono f x =
+	let t = Sys.time () in
+	let _ = f x in
+	Sys.time() -. t
+;;
+------------------------------------------------------
+
+let s1 s2 =
+    let l1 = String.length s1 in
+    let l2 = String.length s2 in 
+    if l1 = l2 then s1 <= s2 else l1 < l2
+;;
+	
+-------------------------------------------------------
+
+let insert' f x l =
+    let rec aux (before, after) = match after with
+        [] -> List.rev (x::before)
+      | h::t -> if f x h
+                then List.rev_append before (x::after)                            (x::after es lo mismo que x::h::t)
+                else aux (h::before, t)
+    in
+      aux ([], l)
+;;
+
+
+let i_sort' f l = 
+    let rec aux ordeandos = function
+         [] -> ordenados
+       | h::t -> aux (insert' f h ordeandos) t
+     in
+       aux [] l
+;;
+
+-----------------------------------------------------------------------------------
+
+type exn =
+        Division_by_zero
+      | Not_found
+      | Stack_overflow
+      | Failure of string
+      | Invalid_argument of string
+      ...
+      
+exception fib
+raise : exn -> 'a
+
+try
+    <e>
+with
+      <exn-1> -> <e1>
+    | <exn-2> -> <e2>
+    ...
+    | <exn-n> -> <en>
+    
+-----------------------------------------------------------------------------------
+
+
+let rec fusion [] l1 l2 = match l1, l2 with
+    [], l | l, [] -> l 
+  | h1::t1, h2::t2 ->
+    if h1 <= h2 then h1 :: fusion t1 l2
+                else h2 :: fusion l1 t2
+;;
+
+ 
+let rec divide = function
+    h1::h2::t -> let l1 l2 = divide t in
+                 h1::l1, h2::l2
+  | l -> l, []
+;;
+
+let rec m_sort l = match l with
+    [] | [_] -> l
+  | _ -> let l1, l2 = divide l in
+         fusion (m_sort l1)  (m_sort l2)
+;; 
+
+
+-------------------------------------------------------------------------------------
+
+type maybe_an int =
+    Some1 of int
+  | None1
+;;
+
+type maybe_an string = 
+    Somes of string
+  | Nones
+;;
+
+type 'a option =
+    Some of 'a
+  | None
+;;  
+
+type nat =
+    0
+  | s of nat
+;;
+
+---------- ARBOLES BINARIOS ----------------------------------------------------------
+
+type 'a tree =
+    V
+  | N of 'a * 'a tree * 'a tree
+;;
+
+let h x = N (x, v, V);;
+
+let num_nodos = function
+    V -> 0
+  | N (_, i, d) -> 1 + num_nodos i + num_nodos d               (i = rama izq ;;; d = rama dcha)
+;;
+
+let rec altura = function
+    V -> 0
+  | N (_,i,d) -> i + max (altura i) (altura d)
+;;
+
+let rec sum_nodos = function
+    V -> 0
+  | N (x,i,d) -> x + sum_nodos i + sum_nodos d
+;;
+
+let rec preorden = function
+    V -> []
+  | N (x,i,d) -> [x]  (x::(preorden i)) & (precorden d)
+;;
+
+type 'a btree =
+    leaf of 'a
+    (SIGUE LA FUNCION POR AQUI PERO NO ME DIO TIEMPO)
+
+
+
+
+
+
+
+
+
+
