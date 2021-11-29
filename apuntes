@@ -177,12 +177,46 @@ let rec sum_nodos = function
 
 let rec preorden = function
     V -> []
-  | N (x,i,d) -> [x]  (x::(preorden i)) & (precorden d)
+  | N (x,i,d) -> [x]  (x::(preorden i)) & (preorden d)
 ;;
 
-type 'a btree =
-    leaf of 'a
-    (SIGUE LA FUNCION POR AQUI PERO NO ME DIO TIEMPO)
+type 'a bin_tree =
+    V
+  | N of 'a = 'a bin_tree * 'a bin_tree
+;;
+
+type 'a st_tree =
+    Leaf of 'a
+  | Node of 'a * 'a st_tree * 'a st_tree
+;;
+
+let rec bin_tree_of_st_tree = function
+    Leaf x -> N (x, V, V)
+  | Node (x, l, d) -> N (x, bin_tree_of_st_tree i, bin_tree_of_st_tree d)
+;;
+
+let rec st_tree_of_bin_tree = function
+    V -> raisen (Invalid_argument "st_tree_of_bin_tree")
+  | N (x, V, V) -> Leaf x
+  | N (x, i, d) -> Node (x, st_tree_of_bin_tree i, st_tree_of_bin_tree d)
+;;
+
+let rec hojas = function
+    V -> []
+  | N (x, V, V) -> [x]
+  | N (_, i, d) -> hojas i @ hojas d
+;;
+    
+
+
+
+
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
+
+Clases subidas al moodle:::::
+
+
 
 
 
