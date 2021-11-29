@@ -207,6 +207,43 @@ let rec hojas = function
   | N (_, i, d) -> hojas i @ hojas d
 ;;
     
+let rec leaves = function
+    Leaf x -> [x]
+  | Node (_, i, d) -> leaves i @ leaves d
+;;
+
+type 'a gtree =
+    GT of 'a * 'a gtree list
+;;
+
+let rec nngtree = function                                      ///////////////////////////// Las nngtree son la 
+    GT (_, []) -> 1                                             ///////////////////////////// misma funcion hecha   
+    GT (_, l) -> List.fold_left (+) 1 (List.map nngtree l)      ///////////////////////////// de distintos modos
+;;      
+
+let rec nngtree = function                                       
+    GT (_,l) -> List.fold_left (+) 1 (List.map nngtree l)
+;;
+
+let rec nngtree = function
+    List.fold_left (+) 1 (List.map nngtree l)
+;;
+
+let rec nngtree = function
+    GT (_, []) -> 1
+  | GT (r, h::t) -> nngtree h + nngtree (GT (r,t))
+;;
+
+let rec anchura = function
+    GT (x, []) -> [x]
+  | GT (x, GT (y,l2) :: l1) -> x :: anchura (GT (y, l1@l2))
+;;
+
+-----------------------------------------------------------------------------------------
+
+
+
+
 
 
 
